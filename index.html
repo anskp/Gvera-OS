@@ -6,19 +6,66 @@
     <title>Gemini OS</title>
     <style type="text/tailwindcss">
       @layer base {
+        :root {
+          --bg-desktop-grad-1: rgba(29, 78, 216, 0.3);
+          --bg-desktop-grad-2: rgba(107, 33, 168, 0.3);
+          --bg-desktop-main: #0f172a;
+          --bg-desktop-fallback: #0c1322;
+          --text-primary: theme('colors.white');
+          --text-secondary: theme('colors.slate.300');
+          --text-tertiary: theme('colors.gray.400');
+          --text-placeholder: theme('colors.gray.500');
+          --icon-text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+          --window-bg: theme('colors.slate.800/90');
+          --window-border: theme('colors.white/20');
+          --window-border-focused: theme('colors.blue.400');
+          --titlebar-bg: theme('colors.slate.700/80');
+          --titlebar-text: theme('colors.white');
+          --taskbar-bg: theme('colors.slate.900/60');
+          --startmenu-bg: theme('colors.slate.900/60');
+          --llm-text-color: theme('colors.gray.200');
+          --llm-input-bg: theme('colors.slate.700');
+          --llm-input-border: theme('colors.slate.600');
+          --icon-hover-bg: theme('colors.white/10');
+          --divider-color: theme('colors.white/20');
+        }
+        .light-theme {
+          --bg-desktop-grad-1: rgba(59, 130, 246, 0.2);
+          --bg-desktop-grad-2: rgba(139, 92, 246, 0.2);
+          --bg-desktop-main: #f1f5f9;
+          --bg-desktop-fallback: #e2e8f0;
+          --text-primary: theme('colors.slate.800');
+          --text-secondary: theme('colors.slate.600');
+          --text-tertiary: theme('colors.gray.600');
+          --text-placeholder: theme('colors.gray.500');
+          --icon-text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+          --window-bg: theme('colors.white/95');
+          --window-border: theme('colors.gray.300');
+          --window-border-focused: theme('colors.blue.500');
+          --titlebar-bg: theme('colors.slate.200/90');
+          --titlebar-text: theme('colors.slate.800');
+          --taskbar-bg: theme('colors.white/70');
+          --startmenu-bg: theme('colors.white/70');
+          --llm-text-color: theme('colors.gray.800');
+          --llm-input-bg: theme('colors.white');
+          --llm-input-border: theme('colors.gray.300');
+          --icon-hover-bg: theme('colors.black/5');
+          --divider-color: theme('colors.black/10');
+        }
         body {
           @apply bg-gray-900;
+          background-color: var(--bg-desktop-main);
           background-image: radial-gradient(
               circle at 25% 25%,
-              rgba(29, 78, 216, 0.3),
-              rgba(29, 78, 216, 0) 40%
+              var(--bg-desktop-grad-1),
+              rgba(0, 0, 0, 0) 40%
             ),
             radial-gradient(
               circle at 75% 75%,
-              rgba(107, 33, 168, 0.3),
-              rgba(107, 33, 168, 0) 40%
+              var(--bg-desktop-grad-2),
+              rgba(0, 0, 0, 0) 40%
             ),
-            linear-gradient(135deg, #0f172a, #0c1322);
+            linear-gradient(135deg, var(--bg-desktop-main), var(--bg-desktop-fallback));
           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
       }
@@ -28,15 +75,20 @@
           @apply bg-blue-600 text-white border-none rounded-md py-2 px-4 m-2 cursor-pointer text-base font-medium text-center transition-colors hover:bg-blue-700 active:bg-blue-800 active:transform active:translate-y-px;
         }
         .llm-text {
-          @apply m-2 text-base text-gray-800 leading-relaxed;
+          @apply m-2 text-base leading-relaxed;
+          color: var(--llm-text-color);
         }
         .llm-title {
           /* New class for titles */
-          @apply font-bold text-xl text-gray-900 mb-3 mt-1 mx-2; /* Added mt-1 and mx-2 for consistent spacing with llm-text */
+          @apply font-bold text-xl mb-3 mt-1 mx-2; /* Added mt-1 and mx-2 for consistent spacing with llm-text */
+           color: var(--text-secondary);
         }
         .llm-input,
         .llm-textarea {
-          @apply m-2 p-2 w-full border border-gray-300 rounded-md bg-white font-sans text-gray-800 text-sm transition-all focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300;
+          @apply m-2 p-2 w-full border rounded-md font-sans text-sm transition-all focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300;
+          background-color: var(--llm-input-bg);
+          border-color: var(--llm-input-border);
+          color: var(--llm-text-color);
         }
         .llm-textarea {
           @apply min-h-[120px];
@@ -48,17 +100,23 @@
           @apply w-full flex items-center mb-2 gap-2;
         }
         .llm-label {
-          @apply mr-1 text-sm text-gray-600;
+          @apply mr-1 text-sm;
+           color: var(--text-secondary);
         }
         /* Styles for generated icons to match desktop icons */
         .icon {
-          @apply w-24 h-28 flex flex-col items-center justify-start text-center m-2 p-2 cursor-pointer select-none rounded-lg transition-colors hover:bg-blue-100/20 focus:bg-blue-100/20 focus:outline-none focus:ring-2 focus:ring-blue-500;
+          @apply w-24 h-28 flex flex-col items-center justify-start text-center m-2 p-2 cursor-pointer select-none rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500;
+          background-color: transparent;
+        }
+        .icon:hover, .icon:focus {
+          background-color: var(--icon-hover-bg);
         }
         .icon-image {
           @apply text-5xl mb-2 drop-shadow-sm;
         }
         .icon-label {
-          @apply text-sm text-gray-800 font-medium break-words max-w-full leading-tight;
+          @apply text-sm font-medium break-words max-w-full leading-tight;
+          color: var(--text-secondary);
         }
       }
     </style>

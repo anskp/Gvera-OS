@@ -27,12 +27,12 @@ const TitleBar: React.FC<{
   onMaximize: () => void;
   isMaximized: boolean;
 }> = ({title, onClose, onMinimize, onMaximize, isMaximized}) => (
-  <div className="h-8 bg-gray-800/80 backdrop-blur-md text-white flex items-center justify-between px-2 select-none rounded-t-lg border-b border-white/10 cursor-move title-bar-handle">
+  <div className="h-8 bg-[var(--titlebar-bg)] backdrop-blur-md text-[var(--titlebar-text)] flex items-center justify-between px-2 select-none rounded-t-lg border-b border-white/10 cursor-move title-bar-handle">
     <span className="text-sm font-medium truncate pl-1">{title}</span>
     <div className="flex items-center space-x-1">
       <button
         onClick={onMinimize}
-        className="w-6 h-6 flex items-center justify-center rounded hover:bg-white/20 transition-colors"
+        className="w-6 h-6 flex items-center justify-center rounded hover:bg-black/10 transition-colors"
         aria-label="Minimize">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -49,7 +49,7 @@ const TitleBar: React.FC<{
       </button>
       <button
         onClick={onMaximize}
-        className="w-6 h-6 flex items-center justify-center rounded hover:bg-white/20 transition-colors"
+        className="w-6 h-6 flex items-center justify-center rounded hover:bg-black/10 transition-colors"
         aria-label={isMaximized ? 'Restore' : 'Maximize'}>
         {isMaximized ? (
           <svg
@@ -142,8 +142,8 @@ export const Window: React.FC<WindowProps> = ({
       minWidth={300}
       minHeight={200}
       style={{zIndex}}
-      className={`flex flex-col rounded-lg shadow-2xl transition-all duration-100 ${
-        isFocused ? 'ring-2 ring-blue-500' : 'ring-1 ring-black/20'
+      className={`flex flex-col rounded-lg shadow-2xl transition-all duration-100 ring-1 ${
+        isFocused ? 'ring-[var(--window-border-focused)] ring-2' : 'ring-[var(--window-border)]'
       }`}
       dragHandleClassName="title-bar-handle"
       disableDragging={isMaximized}
@@ -156,7 +156,7 @@ export const Window: React.FC<WindowProps> = ({
         isMaximized={isMaximized}
       />
       <div
-        className="flex-grow bg-white/90 backdrop-blur-lg overflow-hidden rounded-b-lg"
+        className="flex-grow bg-[var(--window-bg)] backdrop-blur-lg overflow-hidden rounded-b-lg"
         onClick={onFocus}>
         {children ? (
           children

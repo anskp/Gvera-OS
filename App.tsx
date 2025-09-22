@@ -26,6 +26,7 @@ const App: React.FC = () => {
   const [nextZIndex, setNextZIndex] = useState(10); // Starting z-index for windows
   const [virtualFileSystem, setVirtualFileSystem] =
     useState<VFSNode>(initialVFS);
+  const [theme, setTheme] = useState('dark-theme');
 
   // State for parameters that affect all apps
   const [currentMaxHistoryLength, setCurrentMaxHistoryLength] =
@@ -201,6 +202,16 @@ const App: React.FC = () => {
 
   const handleInteraction = useCallback(
     async (windowId: string, interactionData: InteractionData) => {
+      // Handle theme changes, which are system-level and don't need the LLM
+      if (interactionData.id === 'set_theme_light') {
+        setTheme('light-theme');
+        return; // Stop processing for this interaction
+      }
+      if (interactionData.id === 'set_theme_dark') {
+        setTheme('dark-theme');
+        return; // Stop processing for this interaction
+      }
+
       const window = windows.find((win) => win.id === windowId);
       if (!window) return;
 
@@ -295,7 +306,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="w-screen h-screen overflow-hidden relative">
+    <div className={`w-screen h-screen overflow-hidden relative ${theme}`}>
       <Desktop onOpenApp={handleOpenApp}>
         {windows.map((win) => {
           if (win.app.id === 'settings_app') {
@@ -308,6 +319,7 @@ const App: React.FC = () => {
                 onFocus={() => handleFocusWindow(win.id)}
                 onMinimize={() => handleToggleMinimize(win.id)}
                 onUpdate={(updates) => updateWindowState(win.id, updates)}
+                onInteract={(data) => handleInteraction(win.id, data)}
                 isResizable={false}>
                 <ParametersPanel
                   currentLength={currentMaxHistoryLength}
@@ -345,6 +357,8 @@ const App: React.FC = () => {
         onFocusWindow={handleFocusWindow}
         onToggleMinimize={handleToggleMinimize}
         onToggleStartMenu={() => setIsStartMenuOpen((p) => !p)}
+        onOpenApp={handleOpenApp}
+        vfs={virtualFileSystem}
       />
     </div>
   );
