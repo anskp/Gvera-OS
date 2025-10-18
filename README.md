@@ -4,6 +4,8 @@
 
 # Run and deploy your AI Studio app
 
+https://gvera-os.vercel.app/
+
 This contains everything you need to run your app locally.
 
 View your app in AI Studio: https://ai.studio/apps/drive/1rcnQ08-7_prEflBqjwACnwUUbQj_jNHj
